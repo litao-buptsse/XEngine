@@ -1,12 +1,13 @@
 package com.litao.xengine.demo;
 
 import com.litao.xengine.demo.api.HelloThriftService;
-import org.apache.log4j.Logger;
 import org.apache.thrift.TProcessor;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.server.TServer;
 import org.apache.thrift.server.TSimpleServer;
 import org.apache.thrift.transport.TServerSocket;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Created by Tao Li on 9/7/14.
@@ -14,7 +15,7 @@ import org.apache.thrift.transport.TServerSocket;
 public class HelloThriftServer {
     public static final int SERVER_PORT = 9001;
 
-    private static Logger LOG = Logger.getLogger(HelloThriftServer.class);
+    private static Logger LOG = LoggerFactory.getLogger(HelloThriftServer.class);
 
     public void startServer() {
         try {

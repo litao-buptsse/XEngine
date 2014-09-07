@@ -1,13 +1,14 @@
 package com.litao.xengine.demo;
 
 import com.litao.xengine.demo.api.HelloThriftService;
-import org.apache.log4j.Logger;
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.transport.TSocket;
 import org.apache.thrift.transport.TTransport;
 import org.apache.thrift.transport.TTransportException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Created by Tao Li on 9/7/14.
@@ -17,7 +18,7 @@ public class HelloThriftClient {
     public static final int SERVER_PORT = 9001;
     public static final int TIMEOUT = 30000;
 
-    private static Logger LOG = Logger.getLogger(HelloThriftClient.class);
+    private static Logger LOG = LoggerFactory.getLogger(HelloThriftClient.class);
 
     public void startClient(String userName) {
         TTransport transport = null;
