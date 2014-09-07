@@ -2,8 +2,9 @@ package com.litao.xengine.demo;
 
 import com.litao.xengine.demo.api.HelloThriftService;
 import org.apache.thrift.TException;
-import org.apache.thrift.protocol.TBinaryProtocol;
+import org.apache.thrift.protocol.TCompactProtocol;
 import org.apache.thrift.protocol.TProtocol;
+import org.apache.thrift.transport.TFramedTransport;
 import org.apache.thrift.transport.TSocket;
 import org.apache.thrift.transport.TTransport;
 import org.apache.thrift.transport.TTransportException;
@@ -23,19 +24,25 @@ public class HelloThriftClient {
     public void startClient(String userName) {
         TTransport transport = null;
         try {
-            transport = new TSocket(SERVER_IP, SERVER_PORT, TIMEOUT);
-            TProtocol protocol = new TBinaryProtocol(transport);
+            // 1. 简单的单线程服务模型 / 线程池服务模型
+            // transport = new TSocket(SERVER_IP, SERVER_PORT, TIMEOUT);
+            // TProtocol protocol = new TCompactProtocol(transport);
+
+            // 2. 使用非阻塞式IO，协议要和服务端一致
+            transport = new TFramedTransport(new TSocket(SERVER_IP, SERVER_PORT, TIMEOUT));
+            TProtocol protocol = new TCompactProtocol(transport);
+
             HelloThriftService.Client client = new HelloThriftService.Client(protocol);
             transport.open();
 
             String result = client.sayHello(userName);
             LOG.info("Thrift client result: " + result);
-        } catch(TTransportException e) {
+        } catch (TTransportException e) {
             LOG.error(e.getMessage(), e);
         } catch (TException e) {
             LOG.error(e.getMessage(), e);
         } finally {
-            if(transport != null) {
+            if (transport != null) {
                 transport.close();
             }
         }
