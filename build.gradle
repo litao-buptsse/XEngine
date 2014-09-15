@@ -1,0 +1,33 @@
+apply plugin: 'java'
+
+sourceCompatibility = 1.6
+version = '1.0'
+
+repositories {
+    mavenCentral()
+}
+
+sourceSets {
+    main {
+        java { srcDirs 'src/main/java', 'src/main/gen/thrift/gen-java' }
+        resources { srcDir 'src/main/resources' }
+        // exclude 'some/unwanted/package/**'
+    }
+    test {
+        java { srcDir 'src/test/java' }
+        resources { srcDir 'src/test/resources' }
+    }
+}
+
+dependencies {
+    compile(
+        'org.apache.thrift:libthrift:0.9.1',
+        'log4j:log4j:1.2.17',
+        'org.slf4j:slf4j-api:1.7.7',
+        'org.slf4j:slf4j-log4j12:1.7.7',
+        'org.apache.zookeeper:zookeeper:3.4.6'
+    )
+    testCompile(
+        'junit:junit:4.11'
+    )
+}
