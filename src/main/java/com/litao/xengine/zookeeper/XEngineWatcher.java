@@ -7,6 +7,7 @@ import org.apache.zookeeper.ZooDefs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -60,15 +61,20 @@ public class XEngineWatcher extends ConnectionWatcher {
             if (zk.exists(SERVERS_PATH, false) == null) {
                 zk.create(SERVERS_PATH, null, ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
             }
-            registerServer();
+            register();
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
             System.exit(1);
         }
     }
 
-    private String registerServer() throws KeeperException, InterruptedException {
+    private String register() throws KeeperException, InterruptedException {
         return zk.create(SERVER_PATH, null, ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL);
+    }
+
+    public List<String> getActiveServers() throws KeeperException, InterruptedException {
+        // FIXME need to call sync() to get latest view
+        return zk.getChildren(SERVERS_PATH, false);
     }
 
     public static void main(String[] args) throws InterruptedException {

@@ -11,6 +11,6 @@ public class XEngineSlave {
     private static XEngineWatcher watcher = XEngineWatcher.getInstance();
 
     public static void main(String[] args) throws InterruptedException {
-        TimeUnit.SECONDS.sleep(20);
+        TimeUnit.SECONDS.sleep(3600);
     }
 }
