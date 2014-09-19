@@ -3,6 +3,8 @@ apply plugin: 'java'
 sourceCompatibility = 1.6
 version = '1.0'
 
+project.buildDir = 'target'
+
 repositories {
     mavenCentral()
 }
