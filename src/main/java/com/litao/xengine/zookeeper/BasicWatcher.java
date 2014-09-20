@@ -11,7 +11,7 @@ import java.util.concurrent.CountDownLatch;
 /**
  * Created by Tao Li on 9/15/14.
  */
-public abstract class ConnectionWatcher implements Watcher {
+public abstract class BasicWatcher implements Watcher {
     private static final int SESSION_TIMEOUT = XEngineConfiguration.CONFIG.getInt("xengine.zookeeper.session.timeout", 5000);
 
     protected ZooKeeper zk = null;

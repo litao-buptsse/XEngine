@@ -17,12 +17,9 @@ public class XEngineMaster {
     private static Logger LOG = LoggerFactory.getLogger(XEngineMaster.class);
 
     public static void main(String[] args) throws InterruptedException, KeeperException {
-        while(true) {
-            List<String> activeServers = watcher.getActiveServers();
-            LOG.debug("Get active servers from zookeeper...");
-            for (String server : activeServers) {
-                LOG.debug(server);
-            }
+        while (true) {
+            XEngineWatcher.ServerInfo leader = watcher.getLeader();
+            LOG.debug("leader: " + leader);
             TimeUnit.SECONDS.sleep(5);
         }
     }
