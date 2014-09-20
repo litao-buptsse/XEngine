@@ -11,7 +11,7 @@ import java.util.concurrent.CountDownLatch;
 /**
  * Created by Tao Li on 9/15/14.
  */
-public class ConnectionWatcher implements Watcher {
+public abstract class ConnectionWatcher implements Watcher {
     private static final int SESSION_TIMEOUT = XEngineConfiguration.CONFIG.getInt("xengine.zookeeper.session.timeout", 5000);
 
     protected ZooKeeper zk = null;
@@ -28,11 +28,13 @@ public class ConnectionWatcher implements Watcher {
         }
     }
 
+    protected abstract void handler(WatchedEvent event);
+
     @Override
     public void process(WatchedEvent event) {
         if (event.getState() == Event.KeeperState.SyncConnected) {
             connectedSignal.countDown();
         }
-        // TODO need to handle more event
+        handler(event);
     }
 }
