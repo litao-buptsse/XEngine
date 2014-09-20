@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Tao Li on 9/16/14.
@@ -20,7 +19,7 @@ public class XEngineWatcher extends BasicWatcher {
     private static final String ZOOKEEPER_QUORUM;
     private static final String ROOT_PATH;
     private static final String SERVERS_PATH;
-    public static final String SERVER_IP;
+    private static final String SERVER_IP;
     private static final String SERVER_NAME;
 
     private volatile ServerInfo currentServerInfo = new ServerInfo();
@@ -95,9 +94,11 @@ public class XEngineWatcher extends BasicWatcher {
             connect(ZOOKEEPER_QUORUM);
             prepareBasicEnv();
             if (isRegistered()) {
-                unRegister();
+                LOG.error("Server was already started, " + currentServerInfo.serverName);
+                System.exit(1);
+            } else {
+                register();
             }
-            register();
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
             System.exit(1);
@@ -179,7 +180,7 @@ public class XEngineWatcher extends BasicWatcher {
     protected void handler(WatchedEvent event) {
         if(event.getType() == Event.EventType.NodeDeleted) {
             if(event.getPath().equals(currentServerInfo.getFullZnodePath())) {
-                LOG.error("Current server was killed, because a server with same server name started, "
+                LOG.error("Current server was killed, because the znode was removed, "
                         + currentServerInfo.getFullZnodePath());
                 System.exit(1);
             }
